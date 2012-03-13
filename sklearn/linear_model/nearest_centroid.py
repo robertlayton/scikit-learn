@@ -1,8 +1,9 @@
 """
-Quadratic Discriminant Analysis
+Nearest Centroid Classification
 """
 
-# Author: Matthieu Perrot <matthieu.perrot@gmail.com>
+# Author: Robert Layton <robertlayton@gmail.com>
+#         Olivier Grisel <olivier.grisel@ensta.org>
 #
 # License: BSD Style.
 
@@ -11,8 +12,10 @@ import warnings
 import numpy as np
 import scipy.ndimage as ndimage
 
-from .base import BaseEstimator, ClassifierMixin
-from metrics.pairwise import pairwise_distances
+from ..base import BaseEstimator, ClassifierMixin
+from ..utils.validation import check_arrays
+from ..base import ClassifierMixin
+from ..metrics.pairwise import pairwise_distances
 
 
 class NearestCentroid(BaseEstimator, ClassifierMixin):
@@ -41,7 +44,7 @@ class NearestCentroid(BaseEstimator, ClassifierMixin):
 
     Examples
     --------
-    >>> from sklearn.nearest_centroid import NearestCentroid
+    >>> from sklearn.linear_model.nearest_centroid import NearestCentroid
     >>> import numpy as np
     >>> X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
     >>> y = np.array([1, 1, 1, 2, 2, 2])
@@ -72,29 +75,23 @@ class NearestCentroid(BaseEstimator, ClassifierMixin):
         y : array, shape = [n_samples]
             Target values (integers)
         """
-        X = np.asarray(X)
-        y = np.asarray(y)
-        if X.ndim != 2:
-            raise ValueError('X must be a 2D array')
-        if X.shape[0] != y.shape[0]:
-            raise ValueError(
-                'Incompatible shapes: X has %s samples, while y '
-                'has %s' % (X.shape[0], y.shape[0]))
+        X, y = check_arrays(X, y)
         n_samples, n_features = X.shape
         classes = np.unique(y)
         classes.sort()
-        self.classes = classes
+        self.classes_ = classes
         n_classes = classes.size
         if n_classes < 2:
             raise ValueError('y has less than 2 classes')
         self.centroids_ = np.array([np.mean([X[i] for i in range(n_samples)
-                                             if y[i] == cur_class], axis=1)
+                                             if y[i] == cur_class], axis=0)
                                     for cur_class in classes])
         assert self.centroids_.shape == (n_classes, n_features)
         #TODO: Apply shrink here
         if self.shrink_threshold:
             warnings.warn("Shrinking centroids has not been implemented")
             raise AttributeError("shrink_threshold not None")
+        return self
 
     def predict(self, X):
         """Perform classification on an array of test vectors X.
@@ -111,7 +108,6 @@ class NearestCentroid(BaseEstimator, ClassifierMixin):
         """
         if not hasattr(self, "centroids_"):
             raise AttributeError("Model has not been trained yet.")
-        d = pairwise_distances(X, self.centroids)
-        best_matches = d.argmax()[:,0]  # Get best match for each sample.
-        return self.classes[best_matches]
+        return self.classes_[pairwise_distances(
+            X, self.centroids_, metric=self.metric).argmin(axis=1)]
 
