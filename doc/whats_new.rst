@@ -9,6 +9,9 @@
 Changelog
 ---------
 
+   - Various speed improvements of the :ref:`decision trees <tree>` module, by
+     `Gilles Louppe`_.
+
    - :class:`ensemble.GradientBoostingRegressor` and
      :class:`ensemble.GradientBoostingClassifier` now support feature subsampling
      via the ``max_features`` argument.
@@ -17,7 +20,7 @@ Changelog
      :class:`ensemble.GradientBoostingRegressor`.
 
    - :ref:`Decision trees <tree>` and :ref:`forests of randomized trees <forest>`
-     now support multi-output classification and regression problems, by 
+     now support multi-output classification and regression problems, by
      `Gilles Louppe`_.
 
    - Added :class:`preprocessing.LabelBinarizer`, a simple utility class to
@@ -39,6 +42,9 @@ Changelog
 
 API changes summary
 -------------------
+
+   - The old ``scikits.learn`` package has disappeared; all code should import
+     from ``sklearn`` instead, which was introduced in 0.9.
 
    - In :class:`metrics.roc_curve`, the `thresholds` array is now returned
      with it's order reversed, in order to keep it consistent with the order
