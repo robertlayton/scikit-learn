@@ -14,14 +14,9 @@ from sklearn.svm import LinearSVC
 
 import numpy as np
 from nose import SkipTest
-<<<<<<< HEAD
-from nose.tools import (assert_equal, assert_equals, assert_false,
-                        assert_not_equal, assert_true)
-=======
-from nose.tools import assert_equal, assert_equals, \
-            assert_false, assert_not_equal, assert_true, \
-            assert_almost_equal
->>>>>>> ddcdd126fd3a174f4fdbf781dfd0793afd86d2d5
+from nose.tools import (assert_equal, assert_equals,
+                        assert_false, assert_not_equal, assert_true,
+                        assert_almost_equal)
 from numpy.testing import assert_array_almost_equal
 from numpy.testing import assert_array_equal
 from numpy.testing import assert_raises
