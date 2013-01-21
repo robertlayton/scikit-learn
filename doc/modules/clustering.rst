@@ -221,9 +221,11 @@ at which point the final exemplars are chosen, and hence the final clustering
 is given.
 
 Affinity Propagation has a number of advantages over other algorithms. In many
-experiments it is shown to produce a lower error than other algorithms,
-specifically k-means, but it also works without any parameters, choosing the
-number of clusters based on the data provided.
+experiments it is shown to produce a lower error than other algorithms and also
+selects the number of clusters, rather than relying on the user to give this as
+a parameter (i.e. the `k` in k-means). However, the algorithm is highly
+dependent on the values for the preferences and damping factors, and without
+careful selection, the algorithm can struggle to find an effective clustering.
 
 The messages sent between points belong to one of two categories. The first is
 the responsibility `r(i, k)`, which is the accumulated evidence that sample `k`
