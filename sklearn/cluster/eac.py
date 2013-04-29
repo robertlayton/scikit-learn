@@ -9,7 +9,7 @@ EAC: Evidence Accumulation Clustering
 
 import numpy as np
 
-from sklearn.cluster import KMeans, SpectralClustering
+from sklearn.cluster import KMeans, MSTThreshold
 
 from ..base import BaseEstimator, ClusterMixin
 from ..utils import check_random_state, atleast2d_or_csr
@@ -69,7 +69,7 @@ def eac(X, initial_clusterers=None, final_clusterer=None, use_distance=False,
         initial_clusterers = _kmeans_random_k(n_samples, random_state)
     # If the final_clusterer is None, create the default model
     if final_clusterer is None:
-        final_clusterer = create_default_final_clusterer(random_state)
+        final_clusterer = _create_default_final_clusterer()
     # Co-association matrix, originally zeros everywhere
     C = np.zeros((n_samples, n_samples), dtype='float')
     num_initial_clusterers = 0
@@ -143,10 +143,12 @@ def _kmeans_random_k(n_samples, random_state=None, **kmeans_args):
     return (KMeans(n_clusters=k, **kmeans_args) for k in k_values)
 
 
-def create_default_final_clusterer(random_state=None):
-    random_state = check_random_state(random_state)
-    # TODO: MST clustering is the default in the paper, should use that, but it hasn't been implemented yet.
-    return SpectralClustering(n_clusters=3, affinity='precomputed')
+def _create_default_final_clusterer(random_state=None):
+    """Creats a clusterer for the final step in eac. MSTThreshold is used.
+
+    This algorithm is used as it is the one used in the original reference.
+    """
+    return MSTThreshold()
 
 
 class EAC(BaseEstimator, ClusterMixin):
