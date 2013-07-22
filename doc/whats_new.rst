@@ -118,6 +118,14 @@ Changelog
      to be ``n_features``. This was the default behavior, so programs using it
      will continue to work as they did.
 
+   - :class:`sklearn.cluster.KMeans` now fits several orders of magnitude
+     faster on sparse data (the speedup depends on the sparsity). By
+     `Lars Buitinck`_.
+
+   - Python 3 support fixes by `Justin Vincent`_, `Lars Buitinck`_ and
+     `Olivier Grisel`_. All tests now pass under Python 3.3.
+
+
 API changes summary
 -------------------
 
@@ -126,6 +134,22 @@ API changes summary
 
    - Fixed bug in :class:`KFold` causing imperfect class balance in some
      cases. By `Alexandre Gramfort`_ and Tadej Janež.
+
+   - :class:`sklearn.neighbors.BallTree` has been refactored, and a
+     :class:`sklearn.neighbors.KDTree` has been
+     added which shares the same interface.  The Ball Tree now works with
+     a wide variety of distance metrics.  Both classes have many new
+     methods, including single-tree and dual-tree queries, breadth-first
+     and depth-first searching, and more advanced queries such as
+     kernel density estimation and 2-point correlation functions.
+     By `Jake Vanderplas`_
+
+   - Support for scipy.spatial.cKDTree within neighbors queries has been
+     removed, and the functionality replaced with the new :class:`KDTree`
+     class.
+
+   - :class:`sklearn.neighbors.KernelDensity` has been added, which performs
+     efficient kernel density estimation with a variety of kernels.
 
    - :class:`sklearn.decomposition.KernelPCA` now always returns output with
      ``n_components`` components, unless the new parameter ``remove_zero_eig``
@@ -493,7 +517,7 @@ List of contributors for release 0.13 by number of commits.
  *   8  `James Bergstra`_
  *   7  Tadej Janež
  *   6  Brian Cajes
- *   6  `Jake VanderPlas`_
+ *   6  `Jake Vanderplas`_
  *   6  Michael
  *   6  Noel Dawe
  *   6  Tiago Nunes
@@ -742,7 +766,7 @@ People
  *   7  Marko Burjek
  *   5  `Nicolas Pinto`_
  *   4  Alexandre Abraham
- *   4  Jake VanderPlas
+ *   4  `Jake Vanderplas`_
  *   3  `Brian Holt`_
  *   3  `Edouard Duchesnay`_
  *   3  Florian Hoenig
@@ -1064,7 +1088,7 @@ Changelog
    - :ref:`k_means` support for sparse matrices by `Mathieu Blondel`_.
 
    - Improved documentation for developers and for the :mod:`sklearn.utils`
-     module, by `Jake VanderPlas`_.
+     module, by `Jake Vanderplas`_.
 
    - Vectorized 20newsgroups dataset loader
      (:func:`sklearn.datasets.fetch_20newsgroups_vectorized`) by
@@ -1965,3 +1989,5 @@ David Huard, Dave Morrill, Ed Schofield, Travis Oliphant, Pearu Peterson.
 .. _Norbert Crombach: https://github.com/norbert
 
 .. _Eustache Diemert: https://github.com/oddskool
+
+.. _Justin Vincent: https://github.com/justinvf

@@ -652,8 +652,7 @@ def _transform_selected(X, transform, selected="all", copy=True):
         Copy X even if it could be avoided.
 
     selected: "all" or array of indices or mask
-        Specify which features to apply the transform to. May not be a mask
-        for sparse X.
+        Specify which features to apply the transform to.
 
     Returns
     -------
@@ -748,7 +747,7 @@ class OneHotEncoder(BaseEstimator, TransformerMixin):
     >>> enc = OneHotEncoder()
     >>> enc.fit([[0, 0, 3], [1, 1, 0], [0, 2, 1], \
 [1, 0, 2]])  # doctest: +ELLIPSIS
-    OneHotEncoder(categorical_features='all', dtype=<type 'float'>,
+    OneHotEncoder(categorical_features='all', dtype=<... 'float'>,
            n_values='auto')
     >>> enc.n_values_
     array([2, 3, 4])
@@ -761,6 +760,8 @@ class OneHotEncoder(BaseEstimator, TransformerMixin):
     --------
     sklearn.feature_extraction.DictVectorizer : performs a one-hot encoding of
       dictionary items (also handles string-valued features).
+    sklearn.feature_extraction.FeatureHasher : performs an approximate one-hot
+      encoding of dictionary items or strings.
     """
     def __init__(self, n_values="auto", categorical_features="all",
                  dtype=np.float):
