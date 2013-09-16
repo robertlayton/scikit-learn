@@ -1,4 +1,3 @@
-# encoding: utf-8
 # cython: cdivision=True
 # cython: boundscheck=False
 # cython: wraparound=False
@@ -1579,7 +1578,7 @@ cdef class Tree:
                 stack_n_values += 5
 
         self._resize(self.node_count)
-        splitter.X = None # Release reference
+        self.splitter = None # Release memory
         free(stack)
 
     cpdef predict(self, np.ndarray[DTYPE_t, ndim=2] X):
