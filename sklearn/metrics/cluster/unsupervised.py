@@ -184,6 +184,7 @@ def _intra_cluster_distance(distances_row, labels, i):
     """
     mask = labels == labels[i]
     mask[i] = False
+    mask = mask.reshape(distances_row.shape)
     a = np.mean(distances_row[mask])
     return a
 
@@ -209,6 +210,6 @@ def _nearest_cluster_distance(distances_row, labels, i):
         Mean nearest-cluster distance for sample i
     """
     label = labels[i]
-    b = np.min([np.mean(distances_row[labels == cur_label])
+    b = np.min([np.mean(distances_row[(labels == cur_label).reshape(distances_row.shape)])
                for cur_label in set(labels) if not cur_label == label])
     return b
